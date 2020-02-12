@@ -14,17 +14,12 @@ namespace WebApi1.Controllers
 {
     public class LoginController:ApiController
     {
-        [HttpPost]
-        //public void getjion([FromBody]object dataTable)
-        //{
-        //    DataTable tb = (DataTable)dataTable;
-        //}
         public DataTable getjion([ModelBinder(typeof(MyMutableObjectModelBinder))]DataTable dt)
         {
             DataTable data = dt.Clone();
-                DataRow row = data.NewRow();
-                row["MSG"] = "error";
-                data.Rows.Add(row);           
+            DataRow row = data.NewRow();
+            row["MSG"] = "error";
+            data.Rows.Add(row);         
             return data;
         }
         [HttpPost]
@@ -35,6 +30,17 @@ namespace WebApi1.Controllers
             data.Columns.Add("result");
             DataRow row = data.NewRow();
             row["result"] = "error";
+            data.Rows.Add(row);
+            return Request.CreateResponse<DataTable>(HttpStatusCode.OK, data);
+        }
+        [HttpPost]
+        [ResponseType(typeof(DataTable))]
+        public HttpResponseMessage UserExit([ModelBinder(typeof(MyMutableObjectModelBinder))]DataTable dt)
+        {
+            DataTable data = dt.Clone();
+            data.Columns.Add("result");
+            DataRow row = data.NewRow();
+            row["result"] = "sucess";
             data.Rows.Add(row);
             return Request.CreateResponse<DataTable>(HttpStatusCode.OK, data);
         }
